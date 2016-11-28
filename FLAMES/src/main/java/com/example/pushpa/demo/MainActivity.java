@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.util.Scanner;
 
+import static android.support.v4.view.MenuItemCompat.getActionProvider;
 import static android.support.v7.appcompat.R.styleable.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     EditText name, partnername;
     Button calculate;
     String name1, name2;
-
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,33 +164,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.action_menu, menu);
+        MenuItem item = menu.findItem(R.id.mShare);
 
-        return super.onCreateOptionsMenu(menu);
+        mShareActionProvider = (ShareActionProvider)getActionProvider(item);
+
+        return true;
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-
-        switch (item.getItemId()) {
-
-            case R.id.mShare:
-
-                Intent  i = new Intent(android.content.Intent.ACTION_SEND);
-
-                i.setType("text/plain");
-
-//                i.putExtra(android.content.Intent.EXTRA_TEXT, "The string you want to share, which can include URLs");
-
-                startActivity(Intent.createChooser(i, "Select Your Share Option"));
-
-                break;
-
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
         }
-        return super.onOptionsItemSelected(item);
-
     }
 
-    }
+
+
+}
+
+
 
 
